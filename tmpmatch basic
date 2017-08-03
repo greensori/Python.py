@@ -3,8 +3,6 @@
 from PIL import ImageGrab
 import numpy as np
 import cv2
-import psutil
-import time
 
 #result of template match
 match_list = []
@@ -52,7 +50,6 @@ def match_img():
     global prevent_act
     count = 0
     file_no = 0
-    last_time = time.time()
     while True:
         # make a background
         screen = np.array(ImageGrab.grab(bbox=(xsize[0], ysize[0], xsize[1], ysize[1])))
@@ -62,15 +59,9 @@ def match_img():
           screen_gray = matched_img(imread_file[i], screen_gray, file_no)
           file_no += 1
         match_list = []
-        #set text on display
-        screen_text = 'complete in {} seconds'.format(time.time() - last_time)
-        last_time = time.time()
         file_no = 0
         count = 0
-        font = cv2.FONT_HERSHEY_SIMPLEX
-        cv2.putText(screen_gray, screen_text, (10, 850), font, 1, (0, 0, 0), 2)
-        cpu_usage = 'cpu: %s' % str(psutil.cpu_percent())
-        cv2.putText(screen_gray, cpu_usage, (10, 880), font, 1, (0, 0, 0), 2)
+        #resize screen
         screen_gray = cv2.resize(screen_gray, (0, 0), fx=0.5, fy=0.5)
         cv2.imshow('screen_gray: test', screen_gray)
         if cv2.waitKey(25) & 0xFF == ord('q'):
