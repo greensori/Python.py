@@ -40,22 +40,18 @@ file_deleter = ('img_deleter.png', 'img_deleter1.png')
 file_macro = ("img_title1.png", "img_main3.png", "img_title6.png", "img_info1.png", "img_info2.png")
 file_math = ("img_0.png", "img_1.png", "img_2.png", "img_3.png", "img_4.png", "img_5.png", "img_6.png", "img_7.png", "img_8.png", "img_9.png")
 
-#csvcard(code, hp, type, date
-#filename was made data1 + strftime
-#obs(count), data1(civnum), data2(reg)...
+
 class csvcard:
-    def __init__(self, data1, data2):
-        self.data1 = data1
-        self.data2 = data2
-        self.data5 = data5
+    def __init__(self):
+        self.loc = 'D:\print\csv_temp.csv'        
+        self.data4 = datetime.today().strftime("%y-%m-%d")
+        self.data3 = data3
         if rb.get() == 4:
             self.data3 = 'register'
         elif rb.get() == 5:
             self.data3 = 'change'
         else:
             self.data3 = 'notin'
-        self.data4 = datetime.today().strftime("%y-%m-%d")
-        self.loc = 'D:\print\csv_temp.csv'
     def firstwrite(self):
         with open(self.loc, 'wb') as csvfile:
             writer = csv.writer(csvfile, delimiter = ',', quotechar = '|')
@@ -64,8 +60,7 @@ class csvcard:
     def modifydata(self, location, obs, new_data, num):
         obs -= 1
         r = csv.reader(open(location))
-        lines = [l  for l in r]
-        print lines
+        lines = [l for l in r]
         if num == 3:
             lines[obs][3] = new_data
             writer = csv.writer(open(location, 'w'))
@@ -78,10 +73,11 @@ class csvcard:
             lines[obs][5] = new_data
             writer = csv.writer(open(location, 'w'))
             writer.writerows(lines)
-    def card(self, rwcount):
+    def card(self, name, phone, data5):
     ##if count2  value is '0' then writing new data
     ## if count2 value is '1' and rwcount = write then modify previuous data
-        self.data1 = str(self.data1)
+        self.data1 = str(name)
+        self.data2 = str(phone)
         self.data3 = str(self.data3)
         self.data4 = str(self.data4)
         count = 0
@@ -91,24 +87,26 @@ class csvcard:
             for row in csvreader:
                 count += 1
                 if row[1] == self.data1:
-                    print "data read"
+                    print "read exist data"
+                    print row
                     count2 += 1
-                    if rwcount == 'read':
-                        print row
-                    if row[3] <> self.data3 and rwcount == 'write':
+                    if row[3] <> self.data3:
                         self.modifydata(self.loc, count, self.data3, 3)
                         print "modified type information"
-                    if row[4] <> self.data4 and rwcount == 'write':
+                    if row[4] <> self.data4:
                         self.modifydata(self.loc, count, self.data4, 4)
                         print "modified date information"
-                    if row[5]:
-                        self.modifydata(self.loc, count, self.data5, 5)
+                    if data5 == 'renew':
+                        self.modifydata(self.loc, count, 'renew', 5)
                         print "modified checking information"
-            if count2 == 0 and rwcount == 'write':
+                    elif data5 == 'notrenew':
+                        self.modifydata(self.loc, count, 'notrenew', 5)
+                        print 'file wasnt renew'
+            if count2 == 0:
                 print "write new data"
                 with open(self.loc, 'a') as csvfile:
                     writer = csv.writer(csvfile, delimiter = ',', quotechar = '|')
-                    writer.writerow([count, self.data1, self.data2, self.data3, self.data4, 'new'])
+                    writer.writerow([count, self.data1, self.data2, self.data3, self.data4, 'notin'])
         return count2
 
 def imgfile_read(filelist):
@@ -375,19 +373,12 @@ class action:
                     pyautogui.press('0')
                 else:
                     time.sleep(0.1)
-
-
-
+                    
 class autoaction:
-    #there is 2 types of screen and there are
     def __init__(self):
         global click_raw
         click_raw = 1
-        #need to 4 files, menu file and registration file used in first phase
-        # name, phonenumber additional files will be using in scond phase
-        #im second phase will using csv writinds
-        #csv files will savings the
-    def work1(self, phase):
+    def work1(self):
         count = 0
         temp_time = 0
         # click raws is start1
@@ -395,7 +386,7 @@ class autoaction:
         global match_list
         global prevent_action
         match_list = []
-        # this will returns pt
+        #this will returns pt
         while temp_time < 20 and count == 0:
             print ("Try %s times" %temp_time)
             temp_time += 1
@@ -418,7 +409,6 @@ class autoaction:
                                 prevent_action = 1
                                 print 'end of action'
         return count
-
     def work2(self):
         count = 0
         temp_time = 0
@@ -451,38 +441,38 @@ class autoaction:
                                     pyautogui.hotkey('ctrl', 'c')
                                     phone = clipboard.paste()
                                     pyautogui.press('esc')
-####################################modify########################
-        #1. find existing data 2. if there was already had same image files
-        #3. if there is a existing image then modify data5 'not renew'
-        #4. always need to checking date/ different date and differnet image
-        abc = csv.card(name, phone)
-        result = abc.card('read')
-        ## if result = 0 then there is any registered data in csv file
-        ## result = 1 then there was already had registerd data in csv file
-        ##must read csv data in here and find unregisterd data
-        temp_img = cv2.imread('D:\print\pRoi\%s.png' %name, 0)
-        temp_screen = matched_img(temp_img, temp_screen, 'record')
-        for i in match_list:
-            if i[0] == 'record':
-                abc = csvcard(name, phone)
-                #result = count2 value
-                #result = 1 means there is already existing datas on csv
-                #if there is 
-                result = abc.card('wirte')
-                if result == 1:
-                    for i in match_list:
-                        if i[0] == 'record':
-                            print 'not changed files'
-                        if i[0] <> 'record':
-                            pass
-                #tempmathch and check that he was chaged his file and renew date
-                if result == 0:
+        #### datacard working##                            
+        print name
+        print phone
+        datacard = csvcard()
+        resultcard = datacard.card(name, phone, 'read')
+        if resultcard == 0:
+            adjust = [(i[1][0] + 460, i[1][1] + ysize[0] + 1), (i[1][0] + 760, i[1][1] + ysize[0] + 50)]
+            temp_screen = np.array(ImageGrab.grab(bbox=(adjust[0][0], adjust[0][1], adjust[1][0], adjust[1][1])))
+            temp_screen = cv2.cvtColor(temp_screen, cv2.COLOR_BGR2GRAY)
+            cv2.imwrite('D:\print\pRoi\%s.png' %name, temp_screen)
+            print 'ROI saved'
+        elif resultcard == 1:
+            temp_img = cv2.imread('D:\print\pRoi\%s.png' %name, 0)
+            temp_screen = matched_img(temp_img, temp_screen, 'record')
+            match_count = len(match_list)
+            for i in match_list:
+                match_count -= 1
+                if i[0] == 'record':
+                    try:
+                        datacard.card(name, phone, 'notrenew')
+                    except:
+                        pass
+                elif match_count == 0:
+                    try:
+                        datacard.card(name, phone, 'renew')
+                    except:
+                        pass
                     adjust = [(i[1][0] + 460, i[1][1] + ysize[0] + 1), (i[1][0] + 760, i[1][1] + ysize[0] + 50)]
                     temp_screen = np.array(ImageGrab.grab(bbox=(adjust[0][0], adjust[0][1], adjust[1][0], adjust[1][1])))
                     temp_screen = cv2.cvtColor(temp_screen, cv2.COLOR_BGR2GRAY)
                     cv2.imwrite('D:\print\pRoi\%s.png' %name, temp_screen)
-                    print 'ROI saved'                    
-    #png regstraion will start pt[1] because there is 11 amout of registration key
+                    print 'renew ROI saved'
                 
 def get_position(pos, number):
     count = 0
@@ -778,14 +768,14 @@ def card_button():
     if rb.get() == 6:
         atext = 'read'
     elif Entry2.get() == 'init':
-        abc = csvcard(0, 0, 0)
+        abc = csvcard()
         abc.firstwrite()
         print "csv was cleaned"
     else:
-        aa = autoaction()
+        autocheck = autoaction()
         while prevent_action == 0:
-            aa.work1(100)
-            aa.work2()
+            autocheck.work1()
+            autocheck.work2()
             pyautogui.press('backspace')        
     return
 
