@@ -45,7 +45,6 @@ class csvcard:
     def __init__(self):
         self.loc = 'D:\print\csv_temp.csv'        
         self.data4 = datetime.today().strftime("%y-%m-%d")
-        self.data3 = data3
         if rb.get() == 4:
             self.data3 = 'register'
         elif rb.get() == 5:
