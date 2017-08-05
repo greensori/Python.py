@@ -1,5 +1,5 @@
-#set csv file location and filename
-self.loc = 'D:\csv_temp.csv
+'#set csv file location and filename
+self.loc = 'D:\csv_temp.csv'
 
 #when make a csvfile
 with open(self.loc, 'wb') as csvfile:
