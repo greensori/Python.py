@@ -1,3 +1,5 @@
+import csv
+
 '#set csv file location and filename
 self.loc = 'D:\csv_temp.csv'
 
