@@ -463,7 +463,14 @@ class autoaction:
         resultcard = datacard.card(name, phone, 'read')
         if resultcard == 0:
             adjust = [(i[1][0] + 460, i[1][1] + ysize[0] + 1), (i[1][0] + 760, i[1][1] + ysize[0] + 50)]
+            print adjust
             temp_screen = np.array(ImageGrab.grab(bbox=(adjust[0][0], adjust[0][1], adjust[1][0], adjust[1][1])))
+            if np.average(temp_screen) <> 0:                        
+                temp_screen = cv2.cvtColor(temp_screen, cv2.COLOR_BGR2GRAY)
+                cv2.imwrite('D:\print\pRoi\%s.png' %name, temp_screen)
+                print 'renew ROI saved'
+            elif np.average(temp_screen) == 0:
+                print 'fail to save ROI'
             temp_screen = cv2.cvtColor(temp_screen, cv2.COLOR_BGR2GRAY)
             cv2.imwrite('D:\print\pRoi\%s.png' %name, temp_screen)
             print 'ROI saved'
@@ -485,10 +492,13 @@ class autoaction:
                         pass
                     adjust = [(i[1][0] + 460, i[1][1] + ysize[0] + 1), (i[1][0] + 760, i[1][1] + ysize[0] + 50)]
                     temp_screen = np.array(ImageGrab.grab(bbox=(adjust[0][0], adjust[0][1], adjust[1][0], adjust[1][1])))
-                    temp_screen = cv2.cvtColor(temp_screen, cv2.COLOR_BGR2GRAY)
-                    cv2.imwrite('D:\print\pRoi\%s.png' %name, temp_screen)
-                    print 'renew ROI saved'
-                
+                    if np.average(temp_screen) <> 0:                        
+                        temp_screen = cv2.cvtColor(temp_screen, cv2.COLOR_BGR2GRAY)
+                        cv2.imwrite('D:\print\pRoi\%s.png' %name, temp_screen)
+                        print 'renew ROI saved'
+                    elif np.average(temp_screen) == 0:
+                        print 'fail to save ROI'
+                    
 def get_position(pos, number):
     count = 0
     for i in pos:
