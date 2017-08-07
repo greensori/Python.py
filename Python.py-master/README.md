@@ -1,3 +1,2 @@
 # Python.py
-python scripts
-
+python scripts with examples
