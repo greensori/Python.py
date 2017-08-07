@@ -37,7 +37,7 @@ file_title += ('img_title6.png',)
 file_info = ('img_info1.png', 'img_info2.png', 'img_info3.png', 'img_info4.png')
 file_menu = ('img_menu1.png', 'img_menu2.png', 'img_menu3.png', 'img_menu4.png', 'img_menu5.png')
 file_deleter = ('img_deleter.png', 'img_deleter1.png')
-file_macro = ("img_title1.png", "img_main3.png", "img_title6.png", "img_info1.png", "img_info2.png")
+file_macro = ("img_title1.png", "img_main3.png", "img_title6.png", "img_info1.png", "img_info2.png", "img_info4.png")
 file_math = ("img_0.png", "img_1.png", "img_2.png", "img_3.png", "img_4.png", "img_5.png", "img_6.png", "img_7.png", "img_8.png", "img_9.png")
 
 
@@ -422,6 +422,7 @@ class autoaction:
             temp_screen = matched_img(imread_macro[2], temp_screen, 'title6')
             temp_screen = matched_img(imread_macro[3], temp_screen, 'nameinfo')
             temp_screen = matched_img(imread_macro[4], temp_screen, 'addedfile')
+            temp_screen = matched_img(imread_macro[5], temp_screen, 'addedfile2')
             for i in match_list:
                 if i[0] == 'title6' and count == 0:
                     for i in match_list:
@@ -440,6 +441,21 @@ class autoaction:
                                     pyautogui.hotkey('ctrl', 'c')
                                     phone = clipboard.paste()
                                     pyautogui.press('esc')
+                        elif i[0] == 'addedfile2' and count == 0:
+                            for i in match_list:
+                                if i[0] == 'nameinfo' and count == 0:
+                                    count += 1
+                                    adjust = [(i[1][0] + 250, i[1][1] + ysize[0] + 1), (i[1][0] + 250, i[1][1] + ysize[0] + 66)]
+                                    pyautogui.moveTo(adjust[0][0], adjust[0][1])
+                                    pyautogui.click(button = 'left')
+                                    pyautogui.hotkey('ctrl', 'c')
+                                    name = clipboard.paste()
+                                    pyautogui.moveTo(adjust[1][0], adjust[1][1])
+                                    pyautogui.click(button = 'left')
+                                    pyautogui.hotkey('ctrl', 'a')
+                                    pyautogui.hotkey('ctrl', 'c')
+                                    phone = clipboard.paste()
+                                    pyautogui.press('esc')                                
         #### datacard working##                            
         print name
         print phone
