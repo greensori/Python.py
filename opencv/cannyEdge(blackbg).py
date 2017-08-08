@@ -12,7 +12,7 @@ def canny(screen):
     
 while(True):
     screen = np.array(ImageGrab.grab(bbox=(xsize[0], ysize[0], xsize[1], ysize[1])))
-    cv2.imshow('window test', new_screen)
+    cv2.imshow('PC canny(black) screen', canny(screen))
     if cv2.waitKey(25) & 0xFF == ord('q'):
         cv2.destroyAllWindows()
         break
