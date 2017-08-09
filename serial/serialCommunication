@@ -1,0 +1,26 @@
+##serial communication with python
+
+------python---------
+import serial
+
+port = 'COM3'
+baudRate = 115200
+arduino = serial.Serial(port, baudRate, timeout=.5) #use the same baud-rate with arduino
+
+while True:
+	data = arduino.readline()[:-2] #the last bit gets rid of the new-line chars
+	if data:
+		print data
+
+-----arduino-------
+
+#define testmessage 1004
+
+void setup() {
+  Serial.begin(115200);
+}
+
+void loop() {
+  Serial.println(testmessage); // write a string to python
+  delay(1000);
+}
