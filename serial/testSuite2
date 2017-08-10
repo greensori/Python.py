@@ -1,4 +1,51 @@
+---python
+#!/usr/bin/python
+import serial
+import time
 
+port = 'COM3'
+baudRate = 115200
+
+ard = serial.Serial(port,baudRate,timeout=.1)
+
+def serread():
+    while True:
+        time.sleep(2)
+        data = 'd'
+        data = str(data)
+        ard.write(data)
+        time.sleep(1)
+        print ('send msg %s' %data)
+
+        # Serial read section
+        msg = ard.read(ard.inWaiting()) # read everything in the input buffer
+        if msg:
+            print ('msg : %s' %msg)            
+        else:
+            print ('nomsg')
+
+
+def serreads2():
+    while True:
+        data = input('text')
+        ard.write(data)
+        msg = ard.read(ard.inWaiting())
+        msg2 = ard.read()
+        time.sleep(1)
+        print ('msg1 :  %s' %msg)
+        print ('msg2 : %s' %msg2)
+
+def serreadonly():
+    while True:
+        msg = ard.read(ard.inWaiting())
+        if msg:
+            print ('arddata : %s' %msg)
+
+serreads2()
+
+
+
+----arduino
 void setup() {
     Serial.begin(115200);
 }
