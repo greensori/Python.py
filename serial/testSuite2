@@ -56,3 +56,24 @@ void loop() {
         Serial.print(ch, HEX);
     }
 }
+
+----- arduino with using int
+String inData;
+int Value;
+
+void setup() {
+    Serial.begin(115200);
+    Serial.println("Serial conection started, waiting for instructions...");
+}
+
+void loop() {
+    if (Serial.available() > 0) {
+        long ch = Serial.parseInt();
+        // show the byte on serial monitor
+        if (ch == 7)
+        {
+        Serial.print(ch);
+        }
+    }
+}
+
