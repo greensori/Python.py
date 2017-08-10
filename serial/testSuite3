@@ -1,0 +1,55 @@
+
+
+## not working completly
+## stepper motor has same speed
+
+#define ENA     13
+#define STEP    9//for step signal
+#define DIR     8//for direction
+
+int sensorPin = A0;
+int sensorValue = 0;
+
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  pinMode(ENA, OUTPUT);
+  pinMode(STEP, OUTPUT);
+  pinMode(DIR, OUTPUT);
+}
+
+void loop() {
+  int i = 0;
+  sensorValue = analogRead(sensorPin);
+  Serial.print (sensorValue); //send poteiometer info to python
+  if (Serial.available() > 0){
+    long var1 = Serial.parseInt(); //receive information
+  } else if {
+    long var1 = Serial.parseInt();
+  }
+  
+  if (sensorValue < 600){
+    digitalWrite(DIR, HIGH);
+    for (i = 0; i < 
+      digitalWrite(STEP, HIGH);
+      delayMicroseconds(sensorValue);
+      digitalWrite(STEP, LOW);
+   
+   
+   }
+  }
+  
+
+int stepgo(int x, int y, int i){
+  if (x == 1) {
+    digitalWrite(DIR, HIGH);
+  } elif (x == 0) {
+    digitalWrite(DIR, LOW);
+  }
+  for (int y = 0; y < i; y++){
+    pinMode(STEP, HIGH);
+    delayMicroseconds();
+    pinMode(STEP, LOW);
+
+}
