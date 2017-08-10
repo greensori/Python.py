@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#!/usr/bin/python
 import matplotlib.pyplot as plt
 from PIL import ImageGrab
 from multiprocessing import process
@@ -583,7 +584,7 @@ def capture_img():
     tag_no = Entry1.get()
     tag_no2 = datetime.today().strftime("%Y-%m-%d")
     cap_time = time.time()
-    screen_cap = np.array(ImageGrab.grab(bbox=(250, 150, 1250, 1010)))
+    screen_cap = np.array(ImageGrab.grab(bbox=(250, 140, 1250, 1000)))
     screen_cap = cv2.cvtColor(screen_cap, cv2.COLOR_BGR2GRAY)
     img_background = cv2.imread('img_zero.jpg', 0)
     w, h = screen_cap.shape[:2]
@@ -609,7 +610,7 @@ def capture_img2():
     tag_no = Entry1.get()
     tag_no2 = datetime.today().strftime("%Y-%m-%d")
     cap_time = time.time()
-    screen_cap = np.array(ImageGrab.grab(bbox=(250, 150, 1250, 633)))
+    screen_cap = np.array(ImageGrab.grab(bbox=(250, 140, 1250, 623)))
     screen_cap = cv2.cvtColor(screen_cap, cv2.COLOR_BGR2GRAY)
     img_background = cv2.imread('img_zero.jpg', 0)
     w, h = screen_cap.shape[:2]
@@ -635,10 +636,10 @@ def capture_img2():
     ###additional action
     global match_list
     match_list = []
-    cv2.line(img_background, (845, 660), (845, 675), (125, 0, 0), 1)
-    cv2.line(img_background, (940, 660), (940, 675), (125, 0, 0), 1)
-    cv2.line(img_background, (845, 675), (865, 675), (125, 0, 0), 1)
-    cv2.line(img_background, (920, 675), (940, 675), (125, 0, 0), 1)
+    cv2.line(img_background, (845, 650), (845, 665), (125, 0, 0), 1)
+    cv2.line(img_background, (940, 650), (940, 665), (125, 0, 0), 1)
+    cv2.line(img_background, (845, 665), (865, 665), (125, 0, 0), 1)
+    cv2.line(img_background, (920, 665), (940, 665), (125, 0, 0), 1)
     time.sleep(0.3)
     screen = np.array(ImageGrab.grab(bbox=(xsize[0], ysize[0], xsize[1], ysize[1])))
     screen_gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
@@ -670,7 +671,7 @@ def capture_img2():
     delta = delta + dtime.timedelta(1)
     print delta.days
     print 'dtime saves complete'
-    cv2.putText(img_background, '%d' %delta.days, (880, 680), font, 0.5, (165, 0, 0), 2)
+    cv2.putText(img_background, '%d' %delta.days, (880, 670), font, 0.5, (165, 0, 0), 2)
     if tag_no:
         cv2.putText(img_background, '<%s> printdate: %s' %(tag_no, tag_no2), (800, 1725), font, 0.6, (0, 0, 0), 2)
         cv2.imwrite('D:\print\cv%s_time%s.png' %(tag_no, cap_time), img_background)
@@ -686,7 +687,7 @@ def capture_img3():
     tag_no = Entry1.get()
     tag_no2 = datetime.today().strftime("%Y-%m-%d")
     cap_time = time.time()
-    screen_cap = np.array(ImageGrab.grab(bbox = (250, 150, 1250, 1010)))
+    screen_cap = np.array(ImageGrab.grab(bbox = (250, 140, 1250, 1000)))
     screen_cap = cv2.cvtColor(screen_cap, cv2.COLOR_BGR2GRAY)
     img_background = cv2.imread('img_zero.jpg', 0)
     img_rgb = cv2.imread('src_cap.png', 0)
