@@ -1,0 +1,11 @@
+# to writeing information on subscreen
+
+def drawing_information(int):
+    global match_list
+    font = cv2.FONT_HERSHEY_SIMPLEX 
+    for i in match_list:
+        if i[0] == int:
+            cv2.putText(screen_gray, screen_text, (10, 850), font, 1, (0, 0, 0), 2)
+    return
+
+    
