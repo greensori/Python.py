@@ -5,7 +5,11 @@ def drawing_information(int):
     font = cv2.FONT_HERSHEY_SIMPLEX 
     for i in match_list:
         if i[0] == int:
-            cv2.putText(screen_gray, screen_text, (10, 850), font, 1, (0, 0, 0), 2)
+            cv2.putText(screen_gray, screen_text, (i[1][0], i[1][1]), font, 1, (0, 0, 0), 2)
+        if i[0] == int:
+            cv2.putText
     return
 
-    
+def writingtext(i, int, text)
+    if i[0] == int:
+        cv2.puttext(~)
