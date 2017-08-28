@@ -1,0 +1,25 @@
+## scripts for capture and save png files on FDP9 barcode
+
+# -*- coding: utf-8 -*-
+#!/usr/bin/python
+from PIL import ImageGrab
+import numpy as np
+import cv2
+import time
+import pyautogui
+
+
+obs = 0
+def capture_img():
+    time.sleep(5)
+    global obs
+    while True:
+        time.sleep(0.5)
+        screen_cap = np.array(ImageGrab.grab(bbox=(940, 520, 1270, 610)))
+        cv2.imwrite('D:\print\obsno_%d.png' %obs, screen_cap)
+        print ('complete %d' %obs)
+        pyautogui.press('down')
+        time.sleep(0.5)
+        obs += 1
+
+capture_img()
