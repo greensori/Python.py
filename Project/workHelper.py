@@ -645,13 +645,15 @@ def capture_img2():
     screen_gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
     screen_gray = matched_img(imread_deleter[0], screen_gray, 'deleter')
     screen_gray = matched_img(imread_deleter[1], screen_gray, 'deleter1')
+    max_copy = 0
     for i in match_list:
         if i[0] == 'deleter1':
             pyautogui.moveTo(i[1][0] + 110, i[1][1] + 155)
             pyautogui.click(button = 'left')
             time.sleep(0.05)
-            while count == 0:
+            while count == 0 or max_copy < 6:
                 pyautogui.hotkey('ctrl', 'c')
+                maxcopy += 1
                 sdate = clipboard.paste()
                 print sdate
                 if len(sdate) == 10:
@@ -659,8 +661,10 @@ def capture_img2():
             pyautogui.press('tab')
             count = 0
             time.sleep(0.05)
-            while count == 0:
+            max_copy = 0
+            while count == 0 or max_copy < 6:
                 pyautogui.hotkey('ctrl', 'c')
+                max_copy += 1
                 edate = clipboard.paste()
                 print edate
                 if len(edate) == 10 and edate <> sdate:
