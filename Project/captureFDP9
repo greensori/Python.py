@@ -42,3 +42,4 @@ while obs < 414:
     obs += 1
     #cropping = image[100:200, 350:450]
     #image = cv2.imread("")
+    
