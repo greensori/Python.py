@@ -23,3 +23,22 @@ def capture_img():
         obs += 1
 
 capture_img()
+
+
+##imagecropping
+
+import cv2
+import numpy as np
+
+
+obs = 0
+while obs < 414:
+    global obs
+    #count = str(count)
+    fname = 'obsno_%d.png' %obs
+    img = cv2.imread(fname, 0)
+    img = img[0:115, 90:300]
+    cv2.imwrite('D:\print\cv2crop_%d.png' %obs, img)
+    obs += 1
+    #cropping = image[100:200, 350:450]
+    #image = cv2.imread("")
