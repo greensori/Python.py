@@ -651,7 +651,7 @@ def capture_img2():
             pyautogui.moveTo(i[1][0] + 110, i[1][1] + 155)
             pyautogui.click(button = 'left')
             time.sleep(0.05)
-            while count == 0 or max_copy < 6:
+            while count == 0 and max_copy < 6:
                 pyautogui.hotkey('ctrl', 'c')
                 maxcopy += 1
                 sdate = clipboard.paste()
@@ -662,7 +662,7 @@ def capture_img2():
             count = 0
             time.sleep(0.05)
             max_copy = 0
-            while count == 0 or max_copy < 6:
+            while count == 0 and max_copy < 6:
                 pyautogui.hotkey('ctrl', 'c')
                 max_copy += 1
                 edate = clipboard.paste()
