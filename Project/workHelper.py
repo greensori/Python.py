@@ -2,7 +2,7 @@
 #!/usr/bin/python
 import matplotlib.pyplot as plt
 from PIL import ImageGrab
-from multiprocessing import process
+from multiprocessing import Process, Queue
 from datetime import datetime
 from datetime import date
 import datetime as dtime
@@ -30,6 +30,8 @@ macro_key = 0
 #set screen size
 xsize = (0, 1250)
 ysize = (150, 1055)
+
+capsize = (250, 150, 1250, 1000)
 
 t1 = ()
 
@@ -542,6 +544,16 @@ def match_img():
         screen = np.array(ImageGrab.grab(bbox=(xsize[0], ysize[0], xsize[1], ysize[1])))
         screen_gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
         # find image
+        for i in range(len(file_title)):
+            screen_gray = matched_img(imread_file[i], screen_gray, file_no)
+            file_no += 1
+        for i in range(len(file_info)):
+            screen_gray = matched_img(imread_info[i], screen_gray, file_no)
+            file_no += 1
+        for i in range(len(file_menu)):
+            screen_gray = matched_img(imread_menu[i], screen_gray, file_no)
+            file_no += 1
+        '''
         if count == 0 and file_no <= count_a:
             for i in range(len(file_title)):
                 screen_gray = matched_img(imread_file[i], screen_gray, file_no)
@@ -562,6 +574,7 @@ def match_img():
             print "stage3 end"
             # find image 2
             # display screen
+        '''
         screen_text = 'complete in {} seconds'.format(time.time() - last_time)
         last_time = time.time()
         print type(match_list)
@@ -584,7 +597,7 @@ def capture_img():
     tag_no = Entry1.get()
     tag_no2 = datetime.today().strftime("%Y-%m-%d")
     cap_time = time.time()
-    screen_cap = np.array(ImageGrab.grab(bbox=(250, 140, 1250, 1000)))
+    screen_cap = np.array(ImageGrab.grab(bbox = capsize))
     screen_cap = cv2.cvtColor(screen_cap, cv2.COLOR_BGR2GRAY)
     img_background = cv2.imread('img_zero.jpg', 0)
     w, h = screen_cap.shape[:2]
@@ -610,7 +623,7 @@ def capture_img2():
     tag_no = Entry1.get()
     tag_no2 = datetime.today().strftime("%Y-%m-%d")
     cap_time = time.time()
-    screen_cap = np.array(ImageGrab.grab(bbox=(250, 140, 1250, 623)))
+    screen_cap = np.array(ImageGrab.grab(bbox = capsize))
     screen_cap = cv2.cvtColor(screen_cap, cv2.COLOR_BGR2GRAY)
     img_background = cv2.imread('img_zero.jpg', 0)
     w, h = screen_cap.shape[:2]
@@ -636,10 +649,10 @@ def capture_img2():
     ###additional action
     global match_list
     match_list = []
-    cv2.line(img_background, (845, 650), (845, 665), (125, 0, 0), 1)
-    cv2.line(img_background, (940, 650), (940, 665), (125, 0, 0), 1)
-    cv2.line(img_background, (845, 665), (865, 665), (125, 0, 0), 1)
-    cv2.line(img_background, (920, 665), (940, 665), (125, 0, 0), 1)
+    cv2.line(img_background, (845, 663), (845, 678), (125, 0, 0), 1)
+    cv2.line(img_background, (940, 663), (940, 678), (125, 0, 0), 1)
+    cv2.line(img_background, (845, 678), (865, 678), (125, 0, 0), 1)
+    cv2.line(img_background, (920, 678), (940, 678), (125, 0, 0), 1)
     time.sleep(0.3)
     screen = np.array(ImageGrab.grab(bbox=(xsize[0], ysize[0], xsize[1], ysize[1])))
     screen_gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
@@ -653,7 +666,7 @@ def capture_img2():
             time.sleep(0.05)
             while count == 0 and max_copy < 6:
                 pyautogui.hotkey('ctrl', 'c')
-                maxcopy += 1
+                max_copy += 1
                 sdate = clipboard.paste()
                 print sdate
                 if len(sdate) == 10:
@@ -675,7 +688,7 @@ def capture_img2():
     delta = delta + dtime.timedelta(1)
     print delta.days
     print 'dtime saves complete'
-    cv2.putText(img_background, '%d' %delta.days, (880, 670), font, 0.5, (165, 0, 0), 2)
+    cv2.putText(img_background, '%d' %delta.days, (875, 685), font, 0.5, (165, 0, 0), 2)
     if tag_no:
         cv2.putText(img_background, '<%s> printdate: %s' %(tag_no, tag_no2), (800, 1725), font, 0.6, (0, 0, 0), 2)
         cv2.imwrite('D:\print\cv%s_time%s.png' %(tag_no, cap_time), img_background)
@@ -691,7 +704,7 @@ def capture_img3():
     tag_no = Entry1.get()
     tag_no2 = datetime.today().strftime("%Y-%m-%d")
     cap_time = time.time()
-    screen_cap = np.array(ImageGrab.grab(bbox = (250, 140, 1250, 1000)))
+    screen_cap = np.array(ImageGrab.grab(bbox = capsize))
     screen_cap = cv2.cvtColor(screen_cap, cv2.COLOR_BGR2GRAY)
     img_background = cv2.imread('img_zero.jpg', 0)
     img_rgb = cv2.imread('src_cap.png', 0)
@@ -707,7 +720,7 @@ def capture_img3():
     for i in list(range(2)) [::-1]:
         print (i + 1)
         time.sleep(1)
-    screen_cap = np.array(ImageGrab.grab(bbox = ( 250, 140, 1250, 1000)))
+    screen_cap = np.array(ImageGrab.grab(bbox = capsize))
     screen_cap = cv2.cvtColor(screen_cap, cv2.COLOR_BGR2GRAY)
     res = cv2.matchTemplate(screen_cap, img_rgb, cv2.TM_CCOEFF_NORMED)
     threshold = 0.8
@@ -724,7 +737,7 @@ def capture_img3():
     screen_cap = cv2.cvtColor(screen_cap, cv2.COLOR_BGR2GRAY)
     w, h = screen_cap.shape[:2]
     x_offset = 100
-    y_offset = temp_offset - 28
+    y_offset = temp_offset - 38
     img_background[y_offset:y_offset + w, x_offset:x_offset + h] = screen_cap
     font = cv2.FONT_HERSHEY_SIMPLEX
     if tag_no:
@@ -736,6 +749,8 @@ def capture_img3():
 
 
 def autoMatic_button():
+#    pr1 = Process(target=match_img())
+#    pr2 = Process(target=match_img())
     match_img()
 
 def manual_button():
