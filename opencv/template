@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from PIL import ImageGrab
+from matplotlib import pyplot as plt
 
 size = (200, 200, 600, 600)
 
@@ -11,14 +12,23 @@ def canny(screen):
     ret, mask = cv2.threshold(canny_edge, 70, 255, cv2.THRESH_BINARY_INV)
     return mask
 
+def pretest(screen):
+    gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
+    gray = np.float32(gray)
+    dst = cv2.cornerHarris(gray, 2, 3, 0.04)
+    #dst = cv2.dilate(dst,None)
+    #screen[dst>0.01*dst.max()] = [0, 150, 0]
+    return dst
+
+
 def harris(screen):
     gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
     gray = np.float32(gray)
     dst = cv2.cornerHarris(gray, 2, 3, 0.04)
-    print dst
     dst = cv2.dilate(dst,None)
     screen[dst>0.01*dst.max()] = [0, 150, 0]
     return screen
+
 
 def SIFT(screen):
     gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
@@ -26,7 +36,8 @@ def SIFT(screen):
     kp = sift.detect(gray,None)
     #screen=cv2.drawKeypoints(gray,kp)
     screen=cv2.drawKeypoints(gray,kp,flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-    return screen
+    return screen 
+
 
 def goodFeaturesToTrack(screen):
     gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
@@ -37,14 +48,24 @@ def goodFeaturesToTrack(screen):
         cv2.circle(screen, (x,y),3,255,-1)
     return  screen
 
+
 def test():
     while True:
         screen = np.array(ImageGrab.grab(bbox=(size)))
-        cv2.imshow('sample', goodFeaturesToTrack(screen))
+        cv2.imshow('sample2', harris(screen))
+        cv2.imshow('sample', SIFT(screen))
         if cv2.waitKey(25) & 0xFF == ord('q'):
             cv2.destroyAllWindows()
             break
 
 
-test()
-    
+def knearest():
+    trainData = np.random.randint(0,100,(25,2)).astype(np.float32)
+    responses = np.random.randint(0,2,(25,1)).astype(np.float32)
+    red = trainData[responses.ravel()==0]
+    plt.scatter(red[:,0],red[:,1],80,'r','^')
+    print red
+
+
+
+knearest()
