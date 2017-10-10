@@ -1,1 +1,1 @@
-tensorflow for python
+studying tensorflow 
