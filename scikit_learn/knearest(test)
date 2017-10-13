@@ -1,0 +1,17 @@
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+from PIL import ImageGrab
+from sklearn import linear_model, datasets
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neighbors import NearestNeighbors
+
+def knnearest():
+    x = [[0., 0., 0.], [0., .5, 0.], [1., 1., .5]]
+    y = [[0.], [1.], [2.]]
+    neigh = NearestNeighbors(n_neighbors = 2)
+    neigh.fit(x, y)
+    print (neigh.kneighbors([[0.7, 0.3, 0.]]))
+
+knnearest()
