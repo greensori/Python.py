@@ -11,14 +11,10 @@ from sklearn.neighbors import NearestNeighbors
 from sklearn.neighbors.nearest_centroid import NearestCentroid
 
 def cvsreader():
+    fig = plt.figure()
+    splot = fig.add_subplot(111)
+    splot.title.set_text('linearReg_seperate credit')
     my_data = genfromtxt('twrite\ppcvs.csv', delimiter = ',')
-    '''
-    b_patch = mpatches.Patch(color = 'blue', label = 'st')
-    r_patch = mpatches.Patch(color = 'red', label = 'nd')
-    y_patch = mpatches.Patch(color = 'yellow', label = 'rd')
-    g_patch = mpatches.Patch(color = 'green', label = 'th')
-    plt.subplot()
-    '''
     result = my_data[1:len(my_data)]
     aline = np.full((len(result), 1), 1, dtype = np.float64)
     aline = np.concatenate((aline, result[:, np.newaxis, 0]), axis = 1)
@@ -29,22 +25,24 @@ def cvsreader():
     dline = np.full((len(result), 1), 4, dtype = np.float64)
     dline = np.concatenate((dline, result[:, np.newaxis, 3]), axis = 1)
     total = np.concatenate((aline, bline, cline, dline), axis = 0)
-    sa = plt.scatter(aline[:, 0],aline[:, 1],30,'b','o')
-    sb = plt.scatter(bline[:, 0],bline[:, 1],30,'r','o')
-    sc = plt.scatter(cline[:, 0],cline[:, 1],30,'y','o')
-    sd = plt.scatter(dline[:, 0],dline[:, 1],30,'g','o')
-    plt.xlabel('grade')
-    plt.ylabel('credit')
-    plt.legend((sa, sb, sc, sd), ('1st', '2nd', '3rd', '4th'), scatterpoints = 1, fontsize =10)
+    sa = splot.scatter(aline[:, 0],aline[:, 1],30,'b','o')
+    sb = splot.scatter(bline[:, 0],bline[:, 1],30,'r','o')
+    sc = splot.scatter(cline[:, 0],cline[:, 1],30,'y','o')
+    sd = splot.scatter(dline[:, 0],dline[:, 1],30,'g','o')
+    splot.set_xlabel('grade')
+    splot.set_ylabel('credit')
+    splot.legend((sa, sb, sc, sd), ('1st', '2nd', '3rd', '4th'), scatterpoints = 1, fontsize =10)
     reg = linear_model.LinearRegression()
     reg.fit(total[:, np.newaxis, 0], total[:, np.newaxis, 1])
     prex = np.arange(1, 5)
     a = prex[:, np.newaxis]
     prey = reg.predict(a)
-    plt.plot(a, prey, color = 'blue', linewidth = 3)
-    print prey
-    print a
+    splot.plot(a, prey, color = 'blue', linewidth = 3)
+    splot.text(a[3], prey[3] + 0.2, 'coef %s' %reg.coef_, fontsize = 11)
+    splot.text(a[3], prey[3] + 1, 'intercept  %s' %reg.intercept_, fontsize = 11)
+    ay = fig.add_subplot(112)
     print reg.coef_
+    print reg.intercept_
     plt.show()
     print ('complete')
 
