@@ -1,7 +1,7 @@
 def cvsreader():
     fig = plt.figure(1)
     splot = fig.add_subplot(221)
-    splot.title.set_text('linearReg_seperate')
+    splot.title.set_text('linearReg_sep')
     my_data = genfromtxt('C:\data\ppcvs.csv', delimiter = ',')
     result = my_data[1:len(my_data)]
     aline = np.full((len(result), 1), 1, dtype = np.float64)
@@ -26,10 +26,10 @@ def cvsreader():
     a = prex[:, np.newaxis]
     prey = reg.predict(a)
     splot.plot(a, prey, color = 'blue', linewidth = 3)
-    splot.text(a[3], prey[3] + 0.2, 'coef %s' %reg.coef_, fontsize = 11)
-    splot.text(a[3], prey[3] + 1, 'intercept  %s' %reg.intercept_, fontsize = 11)
+    splot.text(a[0], prey[0] + 7.8, 'coef %s' %reg.coef_, fontsize = 11)
+    splot.text(a[0], prey[0] + 9.5, 'intercept  %s' %reg.intercept_, fontsize = 11)
     ay = fig.add_subplot(222)
-    ay.title.set_text('linearReg_accumulation')
+    ay.title.set_text('Credit_total')
     my_data = genfromtxt('C:\data\ppresult.csv', delimiter = ',')
     result = my_data[1:len(my_data)]
     ayline = np.full((len(result), 1), 1, dtype = np.float64)
@@ -47,13 +47,13 @@ def cvsreader():
     ayd = ay.scatter(dyline[:, 0],dyline[:, 1],30,'g','o')
     ay.legend((aya, ayb, ayc, ayd), ('1st', '2nd', '3rd', '4th'), scatterpoints = 1, fontsize =10)
     az = fig.add_subplot(212)
-    az.title.set_text('SVM_result(2nd grade)')
+    az.title.set_text('SVM_plot(4th grade_nonlim)')
     az.set_xlim([1, 5])
-    az.set_ylim([0, 120])
+    #az.set_ylim([0, 2000])
     my_data = genfromtxt('C:\data\presult1.csv', delimiter = ',')
     result = my_data[1:len(my_data)]
     t1_line = np.full((len(result), 1), 1)
-    t1_line = np.concatenate((t1_line, result[:, np.newaxis, 1]), axis = 1)
+    t1_line = np.concatenate((t1_line, result[:, np.newaxis, 3]), axis = 1)
     t1_lineFor = t1_line
     nppie = np.arange(0, 5, 0.05)
     for i in nppie:
@@ -65,7 +65,7 @@ def cvsreader():
     my_data = genfromtxt('C:\data\presult2.csv', delimiter = ',')
     result = my_data[1:len(my_data)]
     t2_line = np.full((len(result), 1), 1)
-    t2_line = np.concatenate((t2_line, result[:, np.newaxis, 1]), axis = 1)
+    t2_line = np.concatenate((t2_line, result[:, np.newaxis, 3]), axis = 1)
     t2_lineFor = t2_line
     nppie = np.arange(0, 5, 0.05)
     for i in nppie:
@@ -77,7 +77,7 @@ def cvsreader():
     my_data = genfromtxt('C:\data\presult3.csv', delimiter = ',')
     result = my_data[1:len(my_data)]
     t3_line = np.full((len(result), 1), 1)
-    t3_line = np.concatenate((t3_line, result[:, np.newaxis, 1]), axis = 1)
+    t3_line = np.concatenate((t3_line, result[:, np.newaxis, 3]), axis = 1)
     t3_lineFor = t3_line
     nppie = np.arange(0, 5, 0.05)
     for i in nppie:
