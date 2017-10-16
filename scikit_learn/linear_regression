@@ -48,16 +48,17 @@ def cvsreader():
     ay.legend((aya, ayb, ayc, ayd), ('1st', '2nd', '3rd', '4th'), scatterpoints = 1, fontsize =10)
     az = fig.add_subplot(212)
     az.title.set_text('SVM_result(2nd grade)')
-    az.set_xlim([0, 2])
-    az.set_ylim([0, 70])
+    az.set_xlim([1, 2])
+    az.set_ylim([30, 70])
     my_data = genfromtxt('twrite\presult1.csv', delimiter = ',')
     result = my_data[1:len(my_data)]
     t1_line = np.full((len(result), 1), 1)
     t1_line = np.concatenate((t1_line, result[:, np.newaxis, 1]), axis = 1)
-    nppie = np.arange(0, 3, np.sin(np.pi/10))
+    nppie = np.arange(1, 2, 0.1)
     for i in nppie:
         print (i)
-        nptempp = (t1_line * i)
+        nptempp = (t1_line * (i * np.sin(np.pi)))
+        print nptempp
         t1_line = np.concatenate((t1_line, nptempp), axis = 0)
     '''
     for i in range(2, 5):
@@ -79,3 +80,5 @@ def cvsreader():
     print reg.intercept_
     plt.show()
     print ('complete')
+
+cvsreader()
