@@ -1,19 +1,7 @@
-import cv2
-import numpy as np
-from numpy import genfromtxt
-import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
-from PIL import ImageGrab
-from sklearn import linear_model, datasets
-from sklearn.metrics import mean_squared_error, r2_score
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.neighbors import NearestNeighbors
-from sklearn.neighbors.nearest_centroid import NearestCentroid
-
 def cvsreader():
     fig = plt.figure()
-    splot = fig.add_subplot(111)
-    splot.title.set_text('linearReg_seperate credit')
+    splot = fig.add_subplot(221)
+    splot.title.set_text('linearReg_seperate')
     my_data = genfromtxt('twrite\ppcvs.csv', delimiter = ',')
     result = my_data[1:len(my_data)]
     aline = np.full((len(result), 1), 1, dtype = np.float64)
@@ -40,10 +28,54 @@ def cvsreader():
     splot.plot(a, prey, color = 'blue', linewidth = 3)
     splot.text(a[3], prey[3] + 0.2, 'coef %s' %reg.coef_, fontsize = 11)
     splot.text(a[3], prey[3] + 1, 'intercept  %s' %reg.intercept_, fontsize = 11)
-    ay = fig.add_subplot(112)
+    ay = fig.add_subplot(222)
+    ay.title.set_text('linearReg_accumulation')
+    my_data = genfromtxt('twrite\ppresult.csv', delimiter = ',')
+    result = my_data[1:len(my_data)]
+    ayline = np.full((len(result), 1), 1, dtype = np.float64)
+    ayline = np.concatenate((ayline, result[:, np.newaxis, 0]), axis = 1)
+    byline = np.full((len(result), 1), 2, dtype = np.float64)
+    byline = np.concatenate((byline, result[:, np.newaxis, 1]), axis = 1)
+    cyline = np.full((len(result), 1), 3, dtype = np.float64)
+    cyline = np.concatenate((cyline, result[:, np.newaxis, 2]), axis = 1)
+    dyline = np.full((len(result), 1), 4, dtype = np.float64)
+    dyline = np.concatenate((dyline, result[:, np.newaxis, 3]), axis = 1)
+    aytotal = np.concatenate((ayline, byline, cyline, dyline), axis = 0)
+    aya = ay.scatter(ayline[:, 0],ayline[:, 1],30,'b','o')
+    ayb = ay.scatter(byline[:, 0],byline[:, 1],30,'r','o')
+    ayc = ay.scatter(cyline[:, 0],cyline[:, 1],30,'y','o')
+    ayd = ay.scatter(dyline[:, 0],dyline[:, 1],30,'g','o')
+    ay.legend((aya, ayb, ayc, ayd), ('1st', '2nd', '3rd', '4th'), scatterpoints = 1, fontsize =10)
+    az = fig.add_subplot(212)
+    az.title.set_text('SVM_result(2nd grade)')
+    az.set_xlim([0, 2])
+    az.set_ylim([0, 70])
+    my_data = genfromtxt('twrite\presult1.csv', delimiter = ',')
+    result = my_data[1:len(my_data)]
+    t1_line = np.full((len(result), 1), 1)
+    t1_line = np.concatenate((t1_line, result[:, np.newaxis, 1]), axis = 1)
+    nppie = np.arange(0, 3, np.sin(np.pi/10))
+    for i in nppie:
+        print (i)
+        nptempp = (t1_line * i)
+        t1_line = np.concatenate((t1_line, nptempp), axis = 0)
+    '''
+    for i in range(2, 5):
+        nptemp = np.full((len(result), 1), i, dtype = np.float64)
+        t1_line = np.concatenate((t1_line, nptemp), axis = 0)
+    result = result.reshape((len(result)) * 4, 1)
+    t1_line = np.concatenate((t1_line, result), axis = 1)
+    '''
+    linefive = np.arange(0, 25, 1)
+    fifty = np.full((25, 1), 57, dtype = np.float64)
+    linefive = linefive.reshape(25, 1)
+    linefive = np.concatenate((linefive, fifty), axis = 1)
+    print (linefive)
+    aza = az.scatter(t1_line[:, 0], t1_line[:, 1], 5, 'r', 'o')
+    
+    az.plot(linefive[:, 0], linefive[:, 1], color = 'blue', linewidth = 3)
+    #az.legend(aza, 'speci', scscatterpoints = 1, fontsize =10)
     print reg.coef_
     print reg.intercept_
     plt.show()
     print ('complete')
-
-cvsreader()
