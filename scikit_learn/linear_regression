@@ -1,8 +1,8 @@
 def cvsreader():
-    fig = plt.figure()
+    fig = plt.figure(1)
     splot = fig.add_subplot(221)
     splot.title.set_text('linearReg_seperate')
-    my_data = genfromtxt('twrite\ppcvs.csv', delimiter = ',')
+    my_data = genfromtxt('C:\data\ppcvs.csv', delimiter = ',')
     result = my_data[1:len(my_data)]
     aline = np.full((len(result), 1), 1, dtype = np.float64)
     aline = np.concatenate((aline, result[:, np.newaxis, 0]), axis = 1)
@@ -30,7 +30,7 @@ def cvsreader():
     splot.text(a[3], prey[3] + 1, 'intercept  %s' %reg.intercept_, fontsize = 11)
     ay = fig.add_subplot(222)
     ay.title.set_text('linearReg_accumulation')
-    my_data = genfromtxt('twrite\ppresult.csv', delimiter = ',')
+    my_data = genfromtxt('C:\data\ppresult.csv', delimiter = ',')
     result = my_data[1:len(my_data)]
     ayline = np.full((len(result), 1), 1, dtype = np.float64)
     ayline = np.concatenate((ayline, result[:, np.newaxis, 0]), axis = 1)
@@ -48,18 +48,44 @@ def cvsreader():
     ay.legend((aya, ayb, ayc, ayd), ('1st', '2nd', '3rd', '4th'), scatterpoints = 1, fontsize =10)
     az = fig.add_subplot(212)
     az.title.set_text('SVM_result(2nd grade)')
-    az.set_xlim([1, 2])
-    az.set_ylim([30, 70])
-    my_data = genfromtxt('twrite\presult1.csv', delimiter = ',')
+    az.set_xlim([1, 5])
+    az.set_ylim([0, 120])
+    my_data = genfromtxt('C:\data\presult1.csv', delimiter = ',')
     result = my_data[1:len(my_data)]
     t1_line = np.full((len(result), 1), 1)
     t1_line = np.concatenate((t1_line, result[:, np.newaxis, 1]), axis = 1)
-    nppie = np.arange(1, 2, 0.1)
+    t1_lineFor = t1_line
+    nppie = np.arange(0, 5, 0.05)
     for i in nppie:
         print (i)
-        nptempp = (t1_line * (i * np.sin(np.pi)))
-        print nptempp
+        nptempp = (t1_lineFor * (np.tan(i/np.pi)))
+        nptempp[:, 0] = i
+        print (nptempp)
         t1_line = np.concatenate((t1_line, nptempp), axis = 0)
+    my_data = genfromtxt('C:\data\presult2.csv', delimiter = ',')
+    result = my_data[1:len(my_data)]
+    t2_line = np.full((len(result), 1), 1)
+    t2_line = np.concatenate((t2_line, result[:, np.newaxis, 1]), axis = 1)
+    t2_lineFor = t2_line
+    nppie = np.arange(0, 5, 0.05)
+    for i in nppie:
+        print (i)
+        nptempp = (t2_lineFor * (np.tan(i/np.pi)))
+        nptempp[:, 0] = i
+        print (nptempp)
+        t2_line = np.concatenate((t2_line, nptempp), axis = 0)
+    my_data = genfromtxt('C:\data\presult3.csv', delimiter = ',')
+    result = my_data[1:len(my_data)]
+    t3_line = np.full((len(result), 1), 1)
+    t3_line = np.concatenate((t3_line, result[:, np.newaxis, 1]), axis = 1)
+    t3_lineFor = t3_line
+    nppie = np.arange(0, 5, 0.05)
+    for i in nppie:
+        print (i)
+        nptempp = (t3_lineFor * (np.tan(i/np.pi)))
+        nptempp[:, 0] = i
+        print (nptempp)
+        t3_line = np.concatenate((t3_line, nptempp), axis = 0)
     '''
     for i in range(2, 5):
         nptemp = np.full((len(result), 1), i, dtype = np.float64)
@@ -67,18 +93,27 @@ def cvsreader():
     result = result.reshape((len(result)) * 4, 1)
     t1_line = np.concatenate((t1_line, result), axis = 1)
     '''
-    linefive = np.arange(0, 25, 1)
-    fifty = np.full((25, 1), 57, dtype = np.float64)
-    linefive = linefive.reshape(25, 1)
+    
+    linefive = np.arange(0, 6, 1)
+    fifty = np.full((6, 1), 57, dtype = np.float64)
+    linefive = linefive.reshape(6, 1)
     linefive = np.concatenate((linefive, fifty), axis = 1)
     print (linefive)
+    print (t1_line[:, 1])
+    az.set_xlabel('arnge_x')
+    az.set_ylabel('lim[x](tan(x)/π)')
     aza = az.scatter(t1_line[:, 0], t1_line[:, 1], 5, 'r', 'o')
-    
+    azb = az.scatter(t2_line[:, 0], t2_line[:, 1], 5, 'b', 'o')
+    azc = az.scatter(t3_line[:, 0], t3_line[:, 1], 5, 'y', 'o')
     az.plot(linefive[:, 0], linefive[:, 1], color = 'blue', linewidth = 3)
-    #az.legend(aza, 'speci', scscatterpoints = 1, fontsize =10)
-    print reg.coef_
-    print reg.intercept_
-    plt.show()
+    linefive = np.arange(0, 6, 1)
+    fifty = np.full((6, 1), 96, dtype = np.float64)
+    linefive = linefive.reshape(6, 1)
+    linefive = np.concatenate((linefive, fifty), axis = 1)
+    az.plot(linefive[:, 0], linefive[:, 1], color = 'pink', linewidth = 3)
+    az.legend((aza, azb, azc), ('speci', 'arch', 'nonarch'), scatterpoints = 1, fontsize =10)
+    print (reg.coef_)
+    print (reg.intercept_)
+    plt.show(block=False)
+    plt.savefig('C:\data\poo.png')
     print ('complete')
-
-cvsreader()
