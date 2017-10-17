@@ -1,0 +1,1 @@
+int = integrate.quad(lambda x: np.tan(x), 0, i/np.pi)
