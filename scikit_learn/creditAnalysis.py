@@ -1,3 +1,35 @@
+def d3plot(arr1, arr2, arr3):
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax = fig.gca(projection = '3d')
+    ax.title.set_text('integral result')
+    my_data = genfromtxt('twrite\presult1.csv', delimiter = ',')
+    result = my_data[1:len(my_data)]
+    t1_line = np.full((len(result), 1), 1)
+    t1_line = np.concatenate((t1_line, result[:, np.newaxis, 3]), axis = 1)
+    t1_lineFor = t1_line
+    nppie = np.arange(1, 6, 0.05)
+    for i in nppie:
+        print (i)
+        integ = integrate.quad(lambda x: np.tan(x), 0, i/np.pi)
+        nptempp = (t1_lineFor * integ[0])
+        nptempp[:, 0] = i
+        print (nptempp)
+        t1_line = np.concatenate((t1_line, nptempp), axis = 0)
+    t1_line = np.concatenate((t1_line, arr1[:, np.newaxis, 1]), axis = 1)
+    ax.scatter(t1_line[:,1], t1_line[:, 2], t1_line[:, 0], 'r', label = 'speci')
+    #ax.plot_surface(t1_line[:,2], t1_line[:, 1], t1_line[:, 0], rstride=8, cstride=8, alpha=0.3, label = 'test')
+    #cset = ax.contour(t1_line[:,0], t1_line[:, 1], (t1_line[:, 1], t1_line[:, 0]), zdir='z', offset=-80000, cmap=cm.coolwarm)
+    #cset = ax.contour(t1_line[:,2], t1_line[:, 0], t1_line[:, 1], zdir='x', offset=-40, cmap=cm.coolwarm)
+    #cset = ax.contour(t1_line[:,2], t1_line[:, 0], t1_line[:, 1], zdir='y', offset=40, cmap=cm.coolwarm)
+    ax.legend()
+    ax.set_xlabel('int(0 ^ x)tan(dx/pi)')
+    ax.set_ylabel('lim[x](tan(x)/pi)')
+    ax.set_zlabel('arnge_x')
+    print (arr1[1485])
+    print (t1_line[1485])
+    plt.show()
+
 def cvsreader():
     fig = plt.figure(1)
     splot = fig.add_subplot(221)
@@ -117,3 +149,5 @@ def cvsreader():
     plt.show(block=False)
     plt.savefig('C:\data\poo.png')
     print ('complete')
+
+    
