@@ -1,3 +1,20 @@
+# -*- coding: cp949 -*-
+import cv2
+import numpy as np
+from numpy import genfromtxt
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+from PIL import ImageGrab
+from sklearn import linear_model, datasets
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neighbors import NearestNeighbors
+from sklearn.neighbors.nearest_centroid import NearestCentroid
+import scipy.integrate as integrate
+import matplotlib as mpl
+from matplotlib import cm
+from mpl_toolkits.mplot3d import Axes3D
+
 def d3plot(arr1, arr2, arr3):
     fig = plt.figure()
     ax = fig.add_subplot(111)
