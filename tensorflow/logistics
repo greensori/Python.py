@@ -1,5 +1,5 @@
 #to showing us to accuracy of data sets
-
+##logistics using sigmoid funnction
 ##tensor flow is target to reduce cost values
 ## y is must 0 or 1
 def logistctest2():
