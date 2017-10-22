@@ -1,0 +1,8 @@
+            
+def logisticstest():
+    #g(z) = z will be between 0 to 1
+    #goal <to find global minimum>
+    cost = tf.reduce_mean(-tf.reduce_sum(y*tf.log(hypothsis) + (1-y)*tf.log(1-hypothesis)))
+    a = tf.Variable(0.1)
+    optimizer = tf.train.GradientDescentOptimizer(a)
+    train = optimizer.minimizer(cost)  
