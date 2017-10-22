@@ -34,6 +34,11 @@ def placeholdertest():
     
     cost = tf.reduce_mean(tf.square(hypo - y))
     
+    
+    #cost deffernt between hypo and real datas
+    #if there is no initial value, we can getting values
+    #learing rate = stepsize of to fine lowest valuest
+    #using gradient decent alogorith(to fine lowest values in cost values)
     optimizer = tf.train.GradientDescentOptimizer(learning_rate = 0.01)
     train = optimizer.minimize(cost)
     
