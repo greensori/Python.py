@@ -1,0 +1,52 @@
+def tfprctice():
+    x = np.arange(1, 4, 1)
+    y = np.arange(1, 4, 1)
+    #define tf variables
+    w = tf.Variable(tf.random_normal([1]), name = 'weight')
+    b = tf.Variable(tf.random_normal([1]), name = 'bias')
+    ##must define shapes of array, normal([1]) <- this is shape
+    #this is my hypothesis
+    hypothesis = x * w + b
+    print (w)
+    print (hypothesis)
+    #this is value of cost
+    cost = tf.reduce_mean(tf.square(hypothesis - y))
+    #our goal if reducing cost
+    optimizer = tf.train.GradientDescentOptimizer(learning_rate = 0.01)
+    train = optimizer.minimize(cost)
+    sess = tf.Session()
+    #initializes global variables in the graph
+    sess.run(tf.global_variables_initializer())
+    for step in range(2001):
+        sess.run(train)
+        if step % 20 == 0:
+            print (step, sess.run(cost), sess.run(w), sess.run(b))
+            #cost value if goint to 1 and, bias going to 0
+            
+def placeholdertest():
+    #unknown data
+    w = tf.Variable(tf.random_normal([1]), name = 'weight')
+    b = tf.Variable(tf.random_normal([1]), name = 'bias')
+    x = tf.placeholder(tf.float32)
+    y = tf.placeholder(tf.float32)
+    
+    hypo = x * w + b
+    
+    cost = tf.reduce_mean(tf.square(hypo - y))
+    
+    optimizer = tf.train.GradientDescentOptimizer(learning_rate = 0.01)
+    train = optimizer.minimize(cost)
+    
+    sess = tf.Session()
+    sess.run(tf.global_variables_initializer())
+    
+    #if there is no initial value, we can getting values
+    for step in range(2001):
+        cost_val, w_val, b_val, _ = sess.run([cost, w, b, train], feed_dict = {x : [1, 2, 3], y : [1, 2, 3]})
+        if step % 20 == 0:
+            print (step, cost, w_val, b_val)
+            
+
+
+if __name__ == '__main__':
+    placeholdertest()
