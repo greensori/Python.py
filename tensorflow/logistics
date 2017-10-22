@@ -1,8 +1,35 @@
-            
-def logisticstest():
-    #g(z) = z will be between 0 to 1
-    #goal <to find global minimum>
-    cost = tf.reduce_mean(-tf.reduce_sum(y*tf.log(hypothsis) + (1-y)*tf.log(1-hypothesis)))
-    a = tf.Variable(0.1)
-    optimizer = tf.train.GradientDescentOptimizer(a)
-    train = optimizer.minimizer(cost)  
+#to showing us to accuracy of data sets
+
+##tensor flow is target to reduce cost values
+## y is must 0 or 1
+def logistctest2():
+    x = [[1, 2], [2, 3], [3, 1], [4, 3], [5, 3], [6, 2]]
+    y = [[0], [0], [0], [1], [1], [1]]
+    _x = tf.placeholder(tf.float32, shape = [None, 2])
+    _y = tf.placeholder(tf.float32, shape = [None, 1])
+    w = tf.Variable(tf.random_normal([2, 1]), name = 'weight')
+    #weight value setting : xdata rank is 2 and ydata rank is 1 then using [2, 1]
+    b = tf.Variable(tf.random_normal([1]), name = 'bias')
+    ##bias is always have same valuse of y datasets
+    
+    hypothesis = tf.sigmoid(tf.matmul(_x, w)+b)
+    
+    cost = -tf.reduce_mean(_y*tf.log(hypothesis) + (1 - _y) * tf.log(1 - hypothesis))
+    print (cost)
+    ##there is n datastes then set 'none'
+    train = tf.train.GradientDescentOptimizer(learning_rate = 0.01).minimize(cost)
+    #True if hypothesis > 0.5, else fail
+    predicted = tf.cast(hypothesis >0.5, dtype = tf.float32)
+    accuracy = tf.reduce_mean(tf.cast(tf.equal(predicted, _y), dtype = tf.float32))
+    ##starting train model
+    with tf.Session() as sess:
+        sess.run(tf.global_variables_initializer())
+        for step in range(1001):
+            cost_val, _ = sess.run([cost, train], feed_dict = {_x : x, _y : y})
+            if step % 200 == 0:
+                print (step, cost_val)
+        #to checking accuracy about our initial datas
+        #that datas have ~% accuracy
+        h, c, a = sess.run([hypothesis, predicted, accuracy], feed_dict = {_x: x, _y : y})
+        print (h, c, a)
+                                  
