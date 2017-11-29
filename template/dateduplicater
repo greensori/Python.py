@@ -1,0 +1,64 @@
+import datetime as dtime
+import numpy as np
+from numpy import genfromtxt
+import csv
+
+
+loc = 'D:\print\pdate.csv'
+
+def cindecsv():
+    sdat = np.zeros((0,0), dtype = np.float64)
+    edat = np.zeros((0,0), dtype = np.float64)
+    gapdat = np.zeros((0,0), dtype = np.float64)
+    count = 0
+    with open(loc, 'rb') as csvfile:
+        r = csv.reader(csvfile, delimiter = ',', quotechar = '|')
+        for row in r:
+            sdate = dtime.date(int(row[0][:4]), int(row[0][4:6]), int(row[0][6:8]))
+            sdat = np.append(sdat, sdate)
+            edate = dtime.date(int(row[1][:4]), int(row[1][4:6]), int(row[1][6:8]))
+            delta = (edate - sdate) + dtime.timedelta(1)
+            edat = np.append(edat, edate)
+            gapdat = np.append(gapdat, delta.days)
+    dup = np.zeros((len(sdat),))
+    my_data = np.concatenate((sdat[:, np.newaxis], edat[:, np.newaxis], gapdat[:,np.newaxis]), axis = 1)
+    for date in my_data:
+        cindesdate(sd = date[0], ed = date[1], data = my_data[:2, , dup = dup)
+    #to verify stating date, 3case exist
+    #for temp in my_data[:, 0]:
+    #    for temp2 in sdat:
+    #        if temp > temp2:
+    #            print 'over'
+
+def cindesdate(**kwards):
+    sd = kwards.get('sd', np.zeros((0, 0)))
+    ed = kwards.get('ed', np.zeros((0, 0)))
+    data = kwards.get('data', np.zeros((0, 0)))
+    dup = kwards.get('dup', np.zers((0, 0)))
+    #to checking date values with startign date              
+    print min(data[:, 0])
+    print max(data[:, 1])
+    '''
+    for temp in data[:3, 0]:
+        print 'result'
+        print temp
+        if sd > temp:
+            for temp2 in data[:, 1]:
+                if temp2 >= sd and temp2 <= ed:
+                    print sd, temp2 , temp2 - sd
+                elif temp2 >= sd and temp2 > ed:
+                    print sd, ed, ed - sd
+    '''
+    return
+
+def cindeedate():
+    return
+    
+    
+def ndate():
+#    my_data = genfromtxt(loc, delimiter = ',', np.dtype = 'float64')
+#    print my_data
+    return
+
+if __name__ == '__main__':
+    cindecsv()
