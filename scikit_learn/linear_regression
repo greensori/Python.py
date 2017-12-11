@@ -1,0 +1,26 @@
+import numpy as np
+from sklearn import linear_model
+from sklearn.metrics import mean_squared_error, r2_score
+
+
+##making a training model
+prex = np.arange(1, 5)
+prey = np.arange(2, 6)
+prex = prex[:, np.newaxis]
+prey = prey[:, np.newaxis]
+reg = linear_model.LinearRegression()
+reg.fit(prex, prey)
+
+x = 5
+hypothesis = (reg.coef_ * x) + reg.intercept_
+
+##make a prediction usding test datas
+result = np.arange(1, 5)
+result = result[:, np.newaxis]
+
+
+#getting a result about datas
+predict_y = reg.predict(result)
+print mean_squared_error(prey, predict_y)
+print r2_score(prey, predict_y)
+
