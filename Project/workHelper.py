@@ -775,19 +775,20 @@ def capture_certification(**kwards):
     cv2.line(screen_cap, (480, 500), (480, 620), (0, 125, 0), 2)
     cv2.line(screen_cap, (550, 580), (550, 620), (0, 125, 0), 2)
     #drawing word(do not modify)
-    cv2.putText(screen_cap, 'establish', (405, 525), font, 0.55, (0, 0, 0), 2)
-    cv2.putText(screen_cap, 'period', (410, 560), font, 0.6, (0, 0, 0), 2)    
-    cv2.putText(screen_cap, 'time', (410, 600), font, 0.6, (0, 0, 0), 2)
-    cv2.putText(screen_cap, '3Year', (490, 600), font, 0.6, (0, 0, 0), 2)
-    cv2.putText(screen_cap, '4Year', (560, 600), font, 0.6, (0, 0, 0), 2)
     #setting cerified period
     cv2.putText(screen_cap, openyear, (490, 520), font, 0.6, (0, 0, 0), 2)
     if cerifiedPeriod <> "":
         cv2.putText(screen_cap, '%s ~' %cerifiedPeriod[0:10], (485, 555), font, 0.5, (0, 0, 0), 2)
         cv2.putText(screen_cap, '%s' %cerifiedPeriod[10:20], (505, 575), font, 0.5, (0, 0, 0), 2)
     else:
-        cv2.putText(screen_cap, 'Not Certificate', (485, 555), font, 0.5, (0, 0, 0), 2)
+        cv2.putText(screen_cap, 'Not Certificated', (485, 555), font, 0.5, (0, 0, 0), 2)
         cv2.putText(screen_cap, 'Authority KIRA', (505, 575), font, 0.5, (0, 0, 0), 2)
+        cv2.circle(screen_cap, (585, 595), 20, (125, 0, 0), 2)
+    cv2.putText(screen_cap, 'establish', (405, 525), font, 0.55, (0, 0, 0), 2)
+    cv2.putText(screen_cap, 'period', (410, 560), font, 0.6, (0, 0, 0), 2)    
+    cv2.putText(screen_cap, 'time', (410, 600), font, 0.6, (0, 0, 0), 2)
+    cv2.putText(screen_cap, '3Year', (490, 600), font, 0.6, (0, 0, 0), 2)
+    cv2.putText(screen_cap, '4Year', (560, 600), font, 0.6, (0, 0, 0), 2)
     cv2.imshow('screen_gray: test', screen_cap)
     cv2.imwrite('D:\print\univ%s.png' %time.time(), screen_cap)
     if cv2.waitKey(25) & 0xFF == ord('q'):
