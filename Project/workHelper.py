@@ -43,6 +43,9 @@ file_deleter = ('img_deleter.png', 'img_deleter1.png')
 file_macro = ("img_title1.png", "img_main3.png", "img_title6.png", "img_info1.png", "img_info2.png", "img_info4.png")
 file_math = ("img_0.png", "img_1.png", "img_2.png", "img_3.png", "img_4.png", "img_5.png", "img_6.png", "img_7.png", "img_8.png", "img_9.png")
 
+univno = np.arange(1, 87, 1)
+univestablish = ('2003.01.01', '2004.01.01', '2002.01.01', '2002.01.01')
+univperiod = ()
 
 class csvcard:
     def __init__(self):
@@ -747,6 +750,49 @@ def capture_img3():
 ################## additional action
     
 
+def capture_certification(**kwards):
+    cerifiedPeriod = Entry2.get()
+    openyear = Entry1.get()
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    pdfcapsize = (520, 150, 1150, 1030)
+    screen_cap = np.array(ImageGrab.grab(bbox = pdfcapsize))
+    screen_cap = cv2.cvtColor(screen_cap, cv2.COLOR_BGR2GRAY)
+    #openyear = '2013.01.01'
+    #cerifiedPeriod = ''
+    '''
+    if univ = 'ih':
+    else if:
+    '''
+    #drawingn horizontal line
+    cv2.line(screen_cap, (400, 500), (620, 500), (0, 125, 0), 2)
+    cv2.line(screen_cap, (400, 540), (620, 540), (0, 125, 0), 2)
+    cv2.line(screen_cap, (400, 580), (620, 580), (0, 125, 0), 2)
+    cv2.line(screen_cap, (400, 620), (620, 620), (0, 125, 0), 2)
+    #drwaing vertical line
+    cv2.line(screen_cap, (400, 500), (400, 620), (0, 125, 0), 2)
+    cv2.line(screen_cap, (620, 500), (620, 620), (0, 125, 0), 2)
+    #drawing seperate room
+    cv2.line(screen_cap, (480, 500), (480, 620), (0, 125, 0), 2)
+    cv2.line(screen_cap, (550, 580), (550, 620), (0, 125, 0), 2)
+    #drawing word(do not modify)
+    cv2.putText(screen_cap, 'establish', (405, 525), font, 0.55, (0, 0, 0), 2)
+    cv2.putText(screen_cap, 'period', (410, 560), font, 0.6, (0, 0, 0), 2)    
+    cv2.putText(screen_cap, 'time', (410, 600), font, 0.6, (0, 0, 0), 2)
+    cv2.putText(screen_cap, '3Year', (490, 600), font, 0.6, (0, 0, 0), 2)
+    cv2.putText(screen_cap, '4Year', (560, 600), font, 0.6, (0, 0, 0), 2)
+    #setting cerified period
+    cv2.putText(screen_cap, openyear, (490, 520), font, 0.6, (0, 0, 0), 2)
+    if cerifiedPeriod <> "":
+        cv2.putText(screen_cap, '%s ~' %cerifiedPeriod[0:10], (485, 555), font, 0.5, (0, 0, 0), 2)
+        cv2.putText(screen_cap, '%s' %cerifiedPeriod[10:20], (505, 575), font, 0.5, (0, 0, 0), 2)
+    else:
+        cv2.putText(screen_cap, 'Not Certificate', (485, 555), font, 0.5, (0, 0, 0), 2)
+        cv2.putText(screen_cap, 'Authority KIRA', (505, 575), font, 0.5, (0, 0, 0), 2)
+    cv2.imshow('screen_gray: test', screen_cap)
+    cv2.imwrite('D:\print\univ%s.png' %time.time(), screen_cap)
+    if cv2.waitKey(25) & 0xFF == ord('q'):
+        cv2.destroyAllWindows()
+
 
 def autoMatic_button():
 #    pr1 = Process(target=match_img())
@@ -825,7 +871,7 @@ def card_button():
     return
 
 def test_button():
-    test_capture()
+    capture_certification()
     
     return
 '''
