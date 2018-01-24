@@ -753,9 +753,9 @@ def capture_img3():
 def capture_certification(**kwards):
     cerifiedPeriod = str(Entry2.get())
     openyear = Entry1.get()
-    if openyear < 10:
+    if len(openyear) == 1:
         openyear = '200%s.01.01' %openyear
-    elif openyear >= 10:
+    elif len(openyear) > 1:
         openyear = '20%s.01.01' %openyear
     if cerifiedPeriod[3:4] == '2':
        cerifiedPeriod = '20%s.%s.01 ~ 20%s.%s.31' %(cerifiedPeriod[0:2], cerifiedPeriod[2:4], cerifiedPeriod[4:6], cerifiedPeriod[6:8])
