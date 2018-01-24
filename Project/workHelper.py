@@ -751,10 +751,19 @@ def capture_img3():
     
 
 def capture_certification(**kwards):
-    cerifiedPeriod = Entry2.get()
+    cerifiedPeriod = str(Entry2.get())
     openyear = Entry1.get()
+    if openyear < 10:
+        openyear = '200%s.01.01' %openyear
+    elif openyear >= 10:
+        openyear = '20%s.01.01' %openyear
+    if cerifiedPeriod[3:4] == '2':
+       cerifiedPeriod = '20%s.%s.01 ~ 20%s.%s.31' %(cerifiedPeriod[0:2], cerifiedPeriod[2:4], cerifiedPeriod[4:6], cerifiedPeriod[6:8])
+    else:
+       cerifiedPeriod = '20%s.%s.31 ~ 20%s.%s.31' %(cerifiedPeriod[0:2], cerifiedPeriod[2:4], cerifiedPeriod[4:6], cerifiedPeriod[6:8])
+    print len(cerifiedPeriod)
     font = cv2.FONT_HERSHEY_SIMPLEX
-    pdfcapsize = (520, 150, 1150, 1030)
+    pdfcapsize = (520, 140, 1150, 1030)
     screen_cap = np.array(ImageGrab.grab(bbox = pdfcapsize))
     screen_cap = cv2.cvtColor(screen_cap, cv2.COLOR_BGR2GRAY)
     #openyear = '2013.01.01'
