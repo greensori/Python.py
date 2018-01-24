@@ -788,7 +788,7 @@ def capture_certification(**kwards):
     cv2.putText(screen_cap, openyear, (490, 520), font, 0.6, (0, 0, 0), 2)
     if cerifiedPeriod <> "":
         cv2.putText(screen_cap, '%s ~' %cerifiedPeriod[0:10], (485, 555), font, 0.5, (0, 0, 0), 2)
-        cv2.putText(screen_cap, '%s' %cerifiedPeriod[10:20], (505, 575), font, 0.5, (0, 0, 0), 2)
+        cv2.putText(screen_cap, '%s' %cerifiedPeriod[13:23], (505, 575), font, 0.5, (0, 0, 0), 2)
     else:
         cv2.putText(screen_cap, 'Not Certificated', (485, 555), font, 0.5, (0, 0, 0), 2)
         cv2.putText(screen_cap, 'Authority KIRA', (505, 575), font, 0.5, (0, 0, 0), 2)
