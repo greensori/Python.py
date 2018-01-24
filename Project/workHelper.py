@@ -752,6 +752,10 @@ def capture_img3():
 
 def capture_certification(**kwards):
     cerifiedPeriod = str(Entry2.get())
+    if cerifiedPeriod == '':
+        certChecker = 1
+    else:
+        certChecker = 2
     openyear = Entry1.get()
     if len(openyear) == 1:
         openyear = '200%s.01.01' %openyear
@@ -759,9 +763,10 @@ def capture_certification(**kwards):
         openyear = '20%s.01.01' %openyear
     if cerifiedPeriod[3:4] == '2':
        cerifiedPeriod = '20%s.%s.01 ~ 20%s.%s.31' %(cerifiedPeriod[0:2], cerifiedPeriod[2:4], cerifiedPeriod[4:6], cerifiedPeriod[6:8])
-    else:
+    elif certChecker == 2:
        cerifiedPeriod = '20%s.%s.31 ~ 20%s.%s.31' %(cerifiedPeriod[0:2], cerifiedPeriod[2:4], cerifiedPeriod[4:6], cerifiedPeriod[6:8])
-    print len(cerifiedPeriod)
+    elif certChecker == 1:
+       cerifiedPeriod = None
     font = cv2.FONT_HERSHEY_SIMPLEX
     pdfcapsize = (520, 140, 1150, 1030)
     screen_cap = np.array(ImageGrab.grab(bbox = pdfcapsize))
@@ -786,7 +791,7 @@ def capture_certification(**kwards):
     #drawing word(do not modify)
     #setting cerified period
     cv2.putText(screen_cap, openyear, (490, 520), font, 0.6, (0, 0, 0), 2)
-    if cerifiedPeriod <> "":
+    if cerifiedPeriod <> None:
         cv2.putText(screen_cap, '%s ~' %cerifiedPeriod[0:10], (485, 555), font, 0.5, (0, 0, 0), 2)
         cv2.putText(screen_cap, '%s' %cerifiedPeriod[13:23], (505, 575), font, 0.5, (0, 0, 0), 2)
     else:
