@@ -783,8 +783,10 @@ def capture_certification(**kwards):
     cv2.line(screen_cap, (400, 540), (620, 540), (0, 125, 0), 2)
     cv2.line(screen_cap, (400, 580), (620, 580), (0, 125, 0), 2)
     #drwaing vertical line
+    '''
     cv2.line(screen_cap, (400, 500), (400, 620), (0, 125, 0), 2)
     cv2.line(screen_cap, (620, 500), (620, 620), (0, 125, 0), 2)
+    '''
     #drawing seperate room
     cv2.line(screen_cap, (480, 500), (480, 620), (0, 125, 0), 2)
     cv2.line(screen_cap, (550, 580), (550, 620), (0, 125, 0), 2)
