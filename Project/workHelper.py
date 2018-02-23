@@ -13,6 +13,7 @@ import os
 import psutil
 import pyautogui
 import Tkinter
+from Tkinter import *
 import clipboard
 import csv
 
@@ -30,6 +31,8 @@ macro_key = 0
 #set screen size
 xsize = (0, 1250)
 ysize = (150, 1055)
+
+preRegno = [None, 0]
 
 capsize = (250, 150, 1250, 1000)
 
@@ -751,67 +754,87 @@ def capture_img3():
     
 
 def capture_certification(**kwards):
+    global preRegno
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    pdfcapsize = (495, 140, 1125, 1030)
     cerifiedPeriod = str(Entry2.get())
     openyear = Entry1.get()
+    Label1.configure(text = openyear)
     timeSelect = openyear[0:1]
-    if cerifiedPeriod == '':
-        certChecker = 1
+    if openyear == preRegno[0]:
+        preRegno[1] = (preRegno[1] + 1)
     else:
-        certChecker = 2
-    if int(openyear[1:]) < 10:
-        openyear = '200%s.01.01' %openyear[1:]
-    elif int(openyear[1:]) >= 10:
-        openyear = '20%s.01.01' %openyear[1:]  
-    if cerifiedPeriod[3:4] == '2':
-       cerifiedPeriod = '20%s.%s.01 ~ 20%s.%s.31' %(cerifiedPeriod[0:2], cerifiedPeriod[2:4], cerifiedPeriod[4:6], cerifiedPeriod[6:8])
-    elif certChecker == 2:
-       cerifiedPeriod = '20%s.%s.31 ~ 20%s.%s.31' %(cerifiedPeriod[0:2], cerifiedPeriod[2:4], cerifiedPeriod[4:6], cerifiedPeriod[6:8])
-    elif certChecker == 1:
-       cerifiedPeriod = None
-    font = cv2.FONT_HERSHEY_SIMPLEX
-    pdfcapsize = (520, 140, 1150, 1030)
-    screen_cap = np.array(ImageGrab.grab(bbox = pdfcapsize))
-    screen_cap = cv2.cvtColor(screen_cap, cv2.COLOR_BGR2GRAY)
-    #openyear = '2013.01.01'
-    #cerifiedPeriod = ''
-    '''
-    if univ = 'ih':
-    else if:
-    '''
-    #drawingn horizontal line
-    cv2.rectangle(screen_cap, (400, 500), (620, 620), (0, 125, 0), 2)
-    cv2.line(screen_cap, (400, 540), (620, 540), (0, 125, 0), 2)
-    cv2.line(screen_cap, (400, 580), (620, 580), (0, 125, 0), 2)
-    #drwaing vertical line
-    '''
-    cv2.line(screen_cap, (400, 500), (400, 620), (0, 125, 0), 2)
-    cv2.line(screen_cap, (620, 500), (620, 620), (0, 125, 0), 2)
-    '''
-    #drawing seperate room
-    cv2.line(screen_cap, (480, 500), (480, 620), (0, 125, 0), 2)
-    cv2.line(screen_cap, (550, 580), (550, 620), (0, 125, 0), 2)
-    #drawing word(do not modify)
-    #setting cerified period
-    cv2.putText(screen_cap, openyear, (490, 520), font, 0.6, (0, 0, 0), 2)
-    if cerifiedPeriod <> None:
-        cv2.putText(screen_cap, '%s ~' %cerifiedPeriod[0:10], (485, 555), font, 0.5, (0, 0, 0), 2)
-        cv2.putText(screen_cap, '%s' %cerifiedPeriod[13:23], (505, 575), font, 0.5, (0, 0, 0), 2)
+        preRegno[0] = openyear
+        preRegno[1] = 0
+    filename = preRegno[0]
+    for i in range(preRegno[1]):
+        filename = filename + 'a'
+    #offsetchange = int(openyear[2:3])
+    #print int(openyear[2:3])
+    if len(openyear) >= 6:
+        screen_cap = np.array(ImageGrab.grab(bbox = pdfcapsize))
+        screen_cap = cv2.cvtColor(screen_cap, cv2.COLOR_BGR2GRAY)
+        cv2.imwrite('D:\print\univ%s.png' %filename, screen_cap)
+        print 'saved%s' %preRegno
+        if cv2.waitKey(25) & 0xFF == ord('q'):
+            cv2.destroyAllWindows()
     else:
-        cv2.putText(screen_cap, 'Not Certificated', (485, 555), font, 0.5, (0, 0, 0), 2)
-        cv2.putText(screen_cap, 'Authority KIRA', (505, 575), font, 0.5, (0, 0, 0), 2)
-    if timeSelect == '3':
-        cv2.circle(screen_cap, (515, 595), 20, (125, 0, 0), 2)
-    elif timeSelect == '4':
-        cv2.circle(screen_cap, (585, 595), 20, (125, 0, 0), 2)
-    cv2.putText(screen_cap, 'establish', (405, 525), font, 0.55, (0, 0, 0), 2)
-    cv2.putText(screen_cap, 'period', (410, 560), font, 0.6, (0, 0, 0), 2)    
-    cv2.putText(screen_cap, 'time', (410, 600), font, 0.6, (0, 0, 0), 2)
-    cv2.putText(screen_cap, '3Year', (490, 600), font, 0.6, (0, 0, 0), 2)
-    cv2.putText(screen_cap, '4Year', (560, 600), font, 0.6, (0, 0, 0), 2)
-    cv2.imshow('screen_gray: test', screen_cap)
-    cv2.imwrite('D:\print\univ%s.png' %time.time(), screen_cap)
-    if cv2.waitKey(25) & 0xFF == ord('q'):
-        cv2.destroyAllWindows()
+        if cerifiedPeriod == '':
+            certChecker = 1
+        else:
+            certChecker = 2
+        if int(openyear[1:]) < 10:
+            openyear = '200%s.01.01' %openyear[1:]
+        elif int(openyear[1:]) >= 10:
+            openyear = '20%s.01.01' %openyear[1:]
+        if cerifiedPeriod[3:4] == '2':
+           cerifiedPeriod = '20%s.%s.01 ~ 20%s.%s.31' %(cerifiedPeriod[0:2], cerifiedPeriod[2:4], cerifiedPeriod[4:6], cerifiedPeriod[6:8])
+        elif certChecker == 2:
+           cerifiedPeriod = '20%s.%s.31 ~ 20%s.%s.31' %(cerifiedPeriod[0:2], cerifiedPeriod[2:4], cerifiedPeriod[4:6], cerifiedPeriod[6:8])
+        elif certChecker == 1:
+           cerifiedPeriod = None
+        screen_cap = np.array(ImageGrab.grab(bbox = pdfcapsize))
+        screen_cap = cv2.cvtColor(screen_cap, cv2.COLOR_BGR2GRAY)
+        #openyear = '2013.01.01'
+        #cerifiedPeriod = ''
+        '''
+        if univ = 'ih':
+        else if:
+        '''
+        #drawingn horizontal line
+        cv2.rectangle(screen_cap, (400, 500), (620, 620), (0, 125, 0), 2)
+        cv2.line(screen_cap, (400, 540), (620, 540), (0, 125, 0), 2)
+        cv2.line(screen_cap, (400, 580), (620, 580), (0, 125, 0), 2)
+        #drwaing vertical line
+        '''
+        cv2.line(screen_cap, (400, 500), (400, 620), (0, 125, 0), 2)
+        cv2.line(screen_cap, (620, 500), (620, 620), (0, 125, 0), 2)
+        '''
+        #drawing seperate room
+        cv2.line(screen_cap, (480, 500), (480, 620), (0, 125, 0), 2)
+        cv2.line(screen_cap, (550, 580), (550, 620), (0, 125, 0), 2)
+        #drawing word(do not modify)
+        #setting cerified period
+        cv2.putText(screen_cap, openyear, (490, 520), font, 0.6, (0, 0, 0), 2)
+        if cerifiedPeriod <> None:
+            cv2.putText(screen_cap, '%s ~' %cerifiedPeriod[0:10], (485, 555), font, 0.5, (0, 0, 0), 2)
+            cv2.putText(screen_cap, '%s' %cerifiedPeriod[13:23], (505, 575), font, 0.5, (0, 0, 0), 2)
+        else:
+            cv2.putText(screen_cap, 'Not Certificated', (485, 555), font, 0.5, (0, 0, 0), 2)
+            cv2.putText(screen_cap, 'Authority KIRA', (505, 575), font, 0.5, (0, 0, 0), 2)
+        if timeSelect == '3':
+            cv2.circle(screen_cap, (515, 595), 20, (125, 0, 0), 2)
+        elif timeSelect == '4':
+            cv2.circle(screen_cap, (585, 595), 20, (125, 0, 0), 2)
+        cv2.putText(screen_cap, 'establish', (405, 525), font, 0.55, (0, 0, 0), 2)
+        cv2.putText(screen_cap, 'period', (410, 560), font, 0.6, (0, 0, 0), 2)    
+        cv2.putText(screen_cap, 'time', (410, 600), font, 0.6, (0, 0, 0), 2)
+        cv2.putText(screen_cap, '3Year', (490, 600), font, 0.6, (0, 0, 0), 2)
+        cv2.putText(screen_cap, '4Year', (560, 600), font, 0.6, (0, 0, 0), 2)
+        cv2.imshow('screen_gray: test', screen_cap)
+        cv2.imwrite('D:\print\univ%s.png' %time.time(), screen_cap)
+        if cv2.waitKey(25) & 0xFF == ord('q'):
+            cv2.destroyAllWindows()
 
 
 def autoMatic_button():
@@ -909,6 +932,7 @@ def radio_sel():
 
 App = Tkinter.Tk()
 App.title("Testsample")
+App.resizable(width = False, height = False)
 
 rb = Tkinter.IntVar()
 rb.set(None)
@@ -943,5 +967,7 @@ Radio4 = Tkinter.Radiobutton(App, text = 'change  ', variable = rb, value = 5)
 Radio4.grid(row=4, column = 3)
 Radio4 = Tkinter.Radiobutton(App, text = 'read      ', variable = rb, value = 6)
 Radio4.grid(row=5, column = 3)
+Label1 = Label(App, text = 'notin')
+Label1.grid(row = 6, columnspan = 3)
 
 App.mainloop()
