@@ -1,0 +1,254 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Mar 12 17:15:55 2019
+
+@author: BluePC
+"""
+
+'''
+##start animation plot set
+twopi = 2*np.pi
+
+fig, ax = plt.subplots()
+
+t = np.arange(0.0, twopi, 0.001)
+s = np.sin(t)
+l = plt.plot(t, s)
+
+ax = plt.axis([0, twopi, -1, 1])
+
+redDot, = plt.plot([0], [np.sin(0)], 'ro')
+
+##end
+
+
+def animate(i):
+    redDot.set_data(i, np.sin(i))
+    return redDot,
+
+myAnimation = animation.FuncAnimation(fig, animate, frames=np.arange(0.0, twopi, 0.1), interval = 10, blit = True, repeat = True)
+'''
+
+
+'''
+blank_image[:,0:width//2] = (255,0,0)      # (B, G, R)
+blank_image[:,width//2:width] = (0,255,0)
+'''
+#spine movement calculator
+#this is making obs cockpit design setting
+
+pp = (0, 0) #pivot point
+
+mp = (0, 0) #moving point
+
+r = 0 #distance
+
+c1 = 0 #moved angle
+
+
+import numpy as np
+import cv2
+import random
+import math
+import seaborn as sns
+
+import time
+
+import pandas as pd
+#import pyzbar.pyzbar as pyzbar
+
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+
+##tensorflow
+import tensorflow as tf
+
+
+test_img_width = 800
+test_img_height = 800
+
+font = cv2.FONT_HERSHEY_SIMPLEX
+
+blank_img = np.zeros((test_img_width, test_img_height, 3), np.uint8)
+
+#cv2.imshow('sample', harris(screen))x
+def showImg(**kwards):
+    alpha_w = int(kwards.get('width_in', 200) *.5)
+    alpha_h = int(kwards.get('height_in', 100) *.5)
+    while True:
+        blank_img = np.zeros((test_img_width, test_img_height, 3), np.uint8)
+        alpha_dst = random.randint(1, 255)
+        beta_dst = random.randint(1, 255)
+        gamma_dst = random.randint(1, 20)
+        delta_dst = random.randint(1, 20)
+        #moving text and lines
+        cv2.putText(blank_img, 'dstTool %i um' %alpha_dst, (13, (alpha_h - 25)), font, 0.6, (0, 0, 255), 1)
+        cv2.putText(blank_img, 'dstMaterial %i um' %beta_dst, (13, (alpha_h + 25)), font, 0.6, (0, 255, 0), 1)
+        cv2.line(blank_img, ((alpha_w + gamma_dst), alpha_h), ((alpha_w + gamma_dst), (alpha_h - 20)), (0, 0, 255), 3)
+        cv2.line(blank_img, ((alpha_w - delta_dst), alpha_h), ((alpha_w - delta_dst), (alpha_h + 20)), (0, 255, 0), 3)
+        #stop text and lines
+        pts = np.array([[alpha_w, (alpha_h - 200)], [(alpha_w + 17), (alpha_h - 220)], [(alpha_w - 17), (alpha_h - 220)]], np.int32)
+        pts = pts.reshape((-1, 1, 2))
+        cv2.polylines(blank_img, [pts], True, (0, 255, 0), 2)
+        cv2.line(blank_img, (0, alpha_h), ((alpha_w *2), (alpha_h)), (0, 125, 0), 1)
+        cv2.circle(blank_img, (alpha_w, alpha_h), 100, (0, 255, 0), 1)
+        #pyzbar
+        cv2.imshow('sample2', blank_img)
+        if cv2.waitKey(25) & 0xFF == ord('q'):
+            cv2.destroyAllWindows()
+            break
+        
+def cameraOpen():
+    cap = cv2.VideoCapture(1)
+    while True:
+        __, frame = cap.read()
+        cv2.imshow('test', frame)
+        if cv2.waitKey(25) & 0xFF == ord('q'):
+                cv2.destroyAllWindows()
+                break
+
+
+class alphaScreen:
+    def __init__(self, **kwards):
+        self.path = kwards.get('filePath', None)
+        capNo = kwards.get('capNo', 0)
+        if self.path:
+            self.cap = cv2.imread(self.path)
+            print ('read image file')
+        else:
+            self.cap = cv2.VideoCapture(capNo)
+            size = self.cap
+            self.width = size.get(3)
+            self.height = size.get(4)
+            print ('w : %i _h : %i' %(size.get(3), size.get(4)))
+    def getFrame(self):
+        __, self.frame = (self.cap).read()
+        #cv2.imshow('test', self.frame)
+        #if cv2.waitKey(25) & 0xFF == ord('q'):
+        #    cv2.destroyAllWindows()
+    def drawingAlpha(self, **kwards):
+        drawFrame = kwards.get('myFrame', self.frame)
+        alpha_dst = random.randint(1, 255)
+        beta_dst = random.randint(1, 255)
+        gamma_dst = random.randint(1, 20)
+        delta_dst = random.randint(1, 20)
+        #moving text and lines
+        alpha_w = int((self.width) *.5)
+        alpha_h = int((self.height) *.5)
+        cv2.putText(drawFrame, 'dstTool %i um' %alpha_dst, (13, (alpha_h - 25)), font, 0.6, (0, 0, 255), 1)
+        cv2.putText(drawFrame, 'dstMaterial %i um' %beta_dst, (13, (alpha_h + 25)), font, 0.6, (0, 255, 0), 1)
+        cv2.line(drawFrame, ((alpha_w + gamma_dst), alpha_h), ((alpha_w + gamma_dst), (alpha_h - 20)), (0, 0, 255), 3)
+        cv2.line(drawFrame, ((alpha_w - delta_dst), alpha_h), ((alpha_w - delta_dst), (alpha_h + 20)), (0, 255, 0), 3)
+        beta_w = alpha_w
+        beta_h = (alpha_h - 100)
+        cv2.line(drawFrame, (alpha_w, alpha_h), (beta_w, beta_h), (0, 0, 255), 1)
+        alphaRand = random.randint(-20, 20)
+        beta_w = alpha_w - int(100 * (math.cos(math.radians(90-alphaRand))))
+        beta_h = alpha_h - int(100 * (math.cos(math.radians(alphaRand))))
+        cv2.line(drawFrame, (alpha_w, alpha_h), (beta_w, beta_h), (0, 255, 0), 1)
+        #stop text and lines
+        pts = np.array([[alpha_w, (alpha_h - 100)], [(alpha_w + 17), (alpha_h - 130)], [(alpha_w - 17), (alpha_h - 130)]], np.int32)
+        pts = pts.reshape((-1, 1, 2))
+        cv2.polylines(drawFrame, [pts], True, (0, 255, 0), 2)
+        cv2.line(drawFrame, (0, alpha_h), ((alpha_w *2), (alpha_h)), (0, 125, 0), 1)
+        cv2.circle(drawFrame, (alpha_w, alpha_h), 100, (0, 255, 0), 1)
+        #decode pyzbar
+        #decodeObjects = pyzbar.decode(self.frame)
+        #print (decodeObjects)
+        #cv2.imshow('alphaScreen', drawFrame)
+        return drawFrame
+    def cannyFrame(self):
+        cannyFrame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
+        cannyFrame = cv2.GaussianBlur(cannyFrame, (1, 1), 0)
+        canny_edge = cv2.Canny(cannyFrame, 10, 70)
+        __, mask = cv2.threshold(canny_edge, 70, 255, cv2.THRESH_BINARY_INV)
+        _, contours, hierarchy = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        for cnt in contours:
+            if len(cnt) > 40:
+                x,y,h,w = cv2.boundingRect(cnt)
+                cv2.rectangle(mask,(x,y),(x+w,y+h),(0,255,0),2)
+        #cv2.imshow('canny', mask)
+        return mask
+    def cntFinder(self):
+        cntFrame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
+        thresh = cv2.adaptiveThreshold(cntFrame,255,1,1,11,2)
+        __, contours,hierarchy = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        for cnt in contours:
+            if len(cnt) > 1000:
+                x,y,h,w = cv2.boundingRect(cnt)
+                cv2.rectangle(cntFrame,(x,y),(x+w,y+h),(0,255,0),2)
+        #cv2.imshow('cnts', cntFrame)
+        return cntFrame
+    def cropFrame(self):
+        cropFrame = self.frame[int((self.width)*.5):(int((self.width)*.5)+50), int((self.height)*.5):int(((self.height)*.5)+50)]
+        cropFrame = cv2.resize(cropFrame, dsize=(int(self.width), int(self.height)), interpolation = cv2.INTER_AREA)
+        cv2.imshow('crop', cropFrame)
+        return
+    def elasticnetFrame(self):
+        netframe = self.frame
+        #netframe = netframe[1:5, 2:3]
+        #print (np.asarray(netframe, dtype='int8'))
+        print (netframe.shape)
+        #find center image innformation
+        netframe = netframe[int(((self.height)*.5)-50):int(((self.height)*.5)+50) , int(((self.width)*.5)-50):int(((self.width)*.5)+50)]
+        #firstLine = np.array(firstLine, dtype = 'int8')
+        #data3 = firstLine[0]
+        data4 = pd.DataFrame({'col1' : netframe[0, :, 0], 'col2' : netframe[0, :, 1], 'col3' : netframe[0, :, 2]})
+        print (data4.head)
+        data4 = pd.DataFrame({'col' : netframe[0]})
+        g = sns.pairplot(data4, diag_kind="kde")
+        time.sleep(1)
+        #data2 = pd.DataFrame(index = dataHead, data = ['22', 7, 2, 3])
+        #print (data2)
+        #pd.DataFrame({'columns' : data[:, 0], 'columns2' : data[:, 1]})
+        #print (redRGB)
+        #sns.rugplot(netframe)
+        return
+    def getROI(self):
+        netframe = self.frame
+        netframe = netframe[int(((self.height)*.5)-50):int(((self.height)*.5)+50) , int(((self.width)*.5)-50):int(((self.width)*.5)+50)]
+        print (netframe)
+    def alphaEnd(self):
+        (self.cap).release()
+        cv2.destroyAllWindows()
+        
+        
+class imgPlot:
+    def __init__(self, **kwards):
+        self.alpha = 2*np.pi
+        self.fig, self.ax = plt.subplots()
+        t = np.arange(.0, self.alpha, .001)
+        s = np.sin(t)
+        l = plt.plot(t, s)
+        
+        self.ax = plt.axis([0, self.alpha, -1, 1])
+        
+        self.redDot, = plt.plot([0], [np.sin(0)], 'ro')
+    def animate(self, i):
+        self.redDot.set_data(i, np.sin(i))
+        return self.redDot,
+    def myAnimation(self):
+        alpha_anim = animation.FuncAnimation(fig, self.animate, frames = np.arange(.0, self.alpha, .1), interval = 10, blit = True, repeat = True)
+        
+if __name__ == '__main__':
+    test = alphaScreen(capNo = 1)
+    while True:
+        test.getFrame()
+        #cv2.imshow('1', test.cntFinder())
+        cv2.imshow('1', test.cannyFrame())
+        #test.elasticnetFrame()
+        cv2.imshow('2', test.drawingAlpha())
+        if cv2.waitKey(25) == ord('w'):
+            time.sleep(1)
+            test.elasticnetFrame()
+        elif cv2.waitKey(25) == ord('e'):
+            time.sleep(1)
+            test.getROI()
+        elif cv2.waitKey(25) & 0xFF == ord('q'):
+            test.alphaEnd()
+            break
+        #animgraph()
+    #cameraOpen()
+    
+    
+    #showImg(width_in = test_img_width, height_in = test_img_height)
